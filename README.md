@@ -25,7 +25,7 @@ sails new sails-with-passport
 
 * Install passport related packages
 ```sh
-npm install passport passport-local --save
+npm install bcrypt passport passport-local --save
 ```
 
 * Create passport hook and add initialization logic
