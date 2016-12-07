@@ -34,19 +34,6 @@ npm install passport passport-local --save
 
 ```
 
-* Create authentication policy
-```javascript
-// here we check for valid user session
-// api/policies/isAuthenticated.js
-```
-
-* Update the policy settings
-```
-// config/policies.js
-// everything is private except UserController.login and UserController.signup
-
-```
-
 * Create the user model
 ```javascript
 // api/models/User.js
@@ -57,7 +44,32 @@ npm install passport passport-local --save
 // api/controllers/UserController.js
 ```
 
+* Create authentication policy
+```javascript
+// here we check for valid user session
+// api/policies/isAuthenticated.js
+...
+  if (req.user) { return next(); }
+  return res.unauthorized();
+...
+```
+
+* Configure policy settings for UserController
+```javascript
+// config/policies.js
+// everything is private except UserController.login and UserController.signup
+...
+  UserController: {
+    '*': 'isAuthenticated',
+    login: true,
+    signup: true
+  }
+...
+```
+
 * Create all required views (in handlebars)
 ```
+// views/homepage.handlebars
+// views/user/login.handlebars
 ```
 
