@@ -68,7 +68,7 @@ npm install passport passport-local --save
 ```
 
 * Create all required views (in handlebars)
-```
+```javascript
 // views/homepage.handlebars
 // views/user/login.handlebars
 ```
