@@ -19,6 +19,8 @@ Integrate passport into your sailsjs application
 
 * Create a new app
 ```sh
+sails new sails-with-passport
+# change templating engine to handlebars => https://github.com/nshimiye/sailsjs-handlebars-app/blob/master/README.md
 ```
 
 * Install passport related packages
