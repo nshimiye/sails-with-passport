@@ -25,10 +25,13 @@ sails new sails-with-passport
 
 * Install passport related packages
 ```sh
+npm install passport passport-local --save
 ```
 
 * Create passport hook and add initialization logic
 ```javascript
+// api/hooks/passport/index.js
+
 ```
 
 * Create authentication policy
