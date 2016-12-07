@@ -43,6 +43,18 @@ sails generate api user login logout signup
 * Add required logic to manage users
 ```javascript
 // api/controllers/UserController.js
+// sample
+...
+  signup: function (req, res) {
+    User.create(req.params.all()).exec(function (err, user) {
+      if (err) return res.negotiate(err);
+      req.login(user, function (err){
+        if (err) return res.negotiate(err);
+        return res.redirect('/welcome');
+      });
+    });
+  }
+...
 ```
 
 * Create authentication policy
