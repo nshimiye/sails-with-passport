@@ -14,3 +14,5 @@ Integrate passport into your sailsjs application
  `req.logout()`                                 | Calls the `deseralizeUser()` fn you set up when configuring passport and rips the user out of the session.
  `req.logout()`                                 | Calls the `deseralizeUser()` fn you set up when configuring passport.
 
+
+# Step by step
