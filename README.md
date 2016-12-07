@@ -31,15 +31,16 @@ npm install passport passport-local --save
 * Create passport hook and add initialization logic
 ```javascript
 // api/hooks/passport/index.js
-
 ```
 
-* Create the user model
-```javascript
-// api/models/User.js
+* Create the user model and UserController
+```sh
+# api/models/User.js
+# api/controllers/UserController.js
+sails generate api user login logout signup
 ```
 
-* Create UserController and add required logic to register and login user
+* Add required logic to manage users
 ```javascript
 // api/controllers/UserController.js
 ```
