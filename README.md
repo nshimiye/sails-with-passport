@@ -83,6 +83,8 @@ sails generate api user login logout signup
 * Create all required views (in handlebars)
 ```javascript
 // views/homepage.handlebars
+// views/user/signup.handlebars
 // views/user/login.handlebars
+// views/user/welcome.handlebars
 ```
 
