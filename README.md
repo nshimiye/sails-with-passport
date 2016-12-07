@@ -33,6 +33,11 @@ npm install passport passport-local --save
 // api/hooks/passport/index.js
 ```
 
+* Configure passport settings
+```javascript
+// config/passport.js
+```
+
 * Create the user model and UserController
 ```sh
 # api/models/User.js
