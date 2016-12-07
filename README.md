@@ -42,4 +42,17 @@ Integrate passport into your sailsjs application
 
 ```
 
+* Create the user model
+```javascript
+// api/models/User.js
+```
+
+* Create UserController and add required logic to register and login user
+```javascript
+// api/controllers/UserController.js
+```
+
+* Create all required views (in handlebars)
+```
+```
 
