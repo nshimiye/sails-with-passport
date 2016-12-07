@@ -88,3 +88,19 @@ sails generate api user login logout signup
 // views/user/welcome.handlebars
 ```
 
+* Add required routes
+```javascript
+// config/routes.js
+...
+  'get /login': { view: 'user/login' },
+  'get /signup': { view: 'user/signup' },
+  '/welcome': { view: 'user/welcome' },
+  'post /login': {
+    controller: 'UserController',
+    action: 'login'
+  },
+  'post /signup': 'UserController.signup',
+  '/logout': 'UserController.logout'
+...
+```
+
