@@ -16,3 +16,30 @@ Integrate passport into your sailsjs application
 
 
 # Step by step
+
+* Create a new app
+```sh
+```
+
+* Install passport related packages
+```sh
+```
+
+* Create passport hook and add initialization logic
+```javascript
+```
+
+* Create authentication policy
+```javascript
+// here we check for valid user session
+// api/policies/isAuthenticated.js
+```
+
+* Update the policy settings
+```
+// config/policies.js
+// everything is private except UserController.login and UserController.signup
+
+```
+
+
