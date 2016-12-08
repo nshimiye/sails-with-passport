@@ -2,7 +2,7 @@
 * @Author: mars
 * @Date:   2016-12-07T14:19:33-05:00
 * @Last modified by:   mars
-* @Last modified time: 2016-12-07T20:49:05-05:00
+* @Last modified time: 2016-12-08T02:39:42-05:00
 */
 
 'use strict';
@@ -46,8 +46,8 @@ module.exports.http = {
       'myRequestLogger',
       'bodyParser',
       // below session @TODO why?
-      'passportInit',
-      'passportSession',
+      // 'passportInit',
+      // 'passportSession',
       // above router @TODO why?
       'handleBodyParserError',
       'compress',
@@ -60,8 +60,8 @@ module.exports.http = {
       '404',
       '500'
     ],
-    passportInit    : require('passport').initialize(),
-    passportSession : require('passport').session()
+    // passportInit    : require('passport').initialize(),
+    // passportSession : require('passport').session()
   /****************************************************************************
   *                                                                           *
   * Example custom middleware; logs each request to the console.              *

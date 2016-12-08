@@ -2,7 +2,7 @@
 * @Author: mars
 * @Date:   2016-12-07T14:48:16-05:00
 * @Last modified by:   mars
-* @Last modified time: 2016-12-07T23:41:30-05:00
+* @Last modified time: 2016-12-08T03:25:42-05:00
 */
 'use strict';
 
@@ -46,6 +46,9 @@ module.exports = {
 
   beforeCreate: function(user, next) {
       if (user.hasOwnProperty('password')) {
+        sails.log.debug('--------------- START beforeCreate password------------------------');
+        sails.log.debug(`-${user.password}-`);
+        sails.log.debug('---------------END beforeCreate password----------------------');
           user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
           next(false, user);
 
@@ -53,22 +56,27 @@ module.exports = {
           next(null, user);
       }
   },
-
 
   beforeUpdate: function(user, next) {
       if (user.hasOwnProperty('password')) {
-          user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
+          // user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
           next(false, user);
       } else {
           next(null, user);
       }
   },
+
+  // @TODO add a function to update password
 
   authenticate: function (email, password) {
       return UtilityService.Model(User).findOne({email})
       .then( user => {
+        sails.log.debug('--------------- START authenticate------------------------');
+        sails.log.debug(user, user && user.password, password, bcrypt.hashSync(password, bcrypt.genSaltSync(10)));
+        sails.log.debug('---------------END authenticate----------------------');
+
         // return (user && user.date_verified && user.comparePassword(password))? user : null;
-          // if(user && !user.comparePassword(password)) { return Promise.reject('wrong password'); }
+          if(user && !user.comparePassword(password)) { return Promise.reject('wrong password'); }
           return (user && user.comparePassword(password))? user : null;
       });
     }

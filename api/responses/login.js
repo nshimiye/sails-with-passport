@@ -2,7 +2,7 @@
 * @Author: mars
 * @Date:   2016-12-07T22:10:50-05:00
 * @Last modified by:   mars
-* @Last modified time: 2016-12-07T22:32:07-05:00
+* @Last modified time: 2016-12-08T02:22:00-05:00
 */
 'use strict';
 /**
@@ -15,7 +15,7 @@
  * @help        :: See http://links.sailsjs.org/docs/responses
  */
 
-var passport = sails.config.passport;
+ const passport = require('passport');
 module.exports = function login(opts) {
 
   // Get access to `req` and `res`

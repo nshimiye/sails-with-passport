@@ -2,7 +2,7 @@
 * @Author: mars
 * @Date:   2016-12-07T14:19:33-05:00
 * @Last modified by:   mars
-* @Last modified time: 2016-12-07T23:49:29-05:00
+* @Last modified time: 2016-12-08T00:24:44-05:00
 */
 
 /**
@@ -50,7 +50,7 @@ module.exports.routes = {
     controller: 'UserController',
     action: 'signupView'
   },
-  '/welcome': {
+  'get /welcome': {
     controller: 'UserController',
     action: 'welcome'
    },
@@ -59,7 +59,16 @@ module.exports.routes = {
     action: 'login'
   },
   'post /signup': 'UserController.signup',
-  '/logout': 'UserController.logout'
+  '/logout': 'UserController.logout',
+
+
+  // externalServices
+  'get /profile': {
+    controller: 'UserController',
+    action: 'welcome'
+   },
+  'get /signup/google': 'ExternalServiceController.signupView', // redirect to google
+  'get /signup/google/callback': 'ExternalServiceController.signup',
 
   /***************************************************************************
   *                                                                          *

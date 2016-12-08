@@ -7,7 +7,7 @@
     "User",
 
     "UtilityService",
-    "API",
+    "PassportService",
     "OAuth",
     "Registration",
     "ExternalServerRegistration"
