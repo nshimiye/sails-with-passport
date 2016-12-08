@@ -2,11 +2,8 @@
 * @Author: mars
 * @Date:   2016-12-07T15:08:25-05:00
 * @Last modified by:   mars
-* @Last modified time: 2016-12-08T00:42:14-05:00
+* @Last modified time: 2016-12-08T16:14:30-05:00
 */
-
-
-
 module.exports = {
 
   passport: {

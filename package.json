@@ -2,7 +2,7 @@
   "name": "sails-with-passport",
   "private": true,
   "version": "0.0.0",
-  "description": "a Sails application",
+  "description": "Integrate passport into your sailsjs application",
   "keywords": [],
   "dependencies": {
     "bcrypt": "^1.0.0",
@@ -22,7 +22,6 @@
     "handlebars": "^4.0.6",
     "include-all": "^1.0.0",
     "passport": "^0.3.2",
-    "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",
     "rc": "1.0.1",
     "sails": "~0.12.11",

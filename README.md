@@ -1,18 +1,20 @@
+<!--
+@Author: mars
+@Date:   2016-12-07T14:19:33-05:00
+@Last modified by:   mars
+@Last modified time: 2016-12-08T17:10:34-05:00
+-->
+
+
+
 # sails-with-passport
 Integrate passport into your sailsjs application
 
 # Scenario
+I want to manage users using a sailsjs app.
 
 # End goal
-
-##### [Passport's methods](https://github.com/sails101/using-passport/blob/master/ORIGINAL_PREHOOK_WALKTHROUGH.md#passports-methods)
-
- Method                                         | What it does
- ---------------------------------------------- | ------------------------------------------------------------------------------------------------
- `req.authenticate(strgy,cb)(req,res,mysteryFn)`| Parses credentials from the session.  If you're not logged in, it parses credentials from the request, then calls the `verify()` fn you set up when configuring the strategy.  Finally it calls its callback (`cb`).
- `req.login()`                                  | Calls the `seralizeUser()` fn you set up when configuring passport and stuffs the user in the session.
- `req.logout()`                                 | Calls the `deseralizeUser()` fn you set up when configuring passport and rips the user out of the session.
- `req.logout()`                                 | Calls the `deseralizeUser()` fn you set up when configuring passport.
+<!-- should be a screenshot i guess -->
 
 
 # Step by step
@@ -31,44 +33,94 @@ npm install bcrypt passport passport-local --save
 * Create passport hook and add initialization logic
 ```javascript
 // api/hooks/passport/index.js
+...
+let UserModel = sails.models[sails.config.passport.userModelIdentity];
+passport.serializeUser((user, done) => {
+  done(null, user[UserModel.primaryKey]);
+});
+
+passport.deserializeUser((id, done) => {
+  UserModel.findOne(id, (err, user) => {
+    done(err, user);
+  });
+});
+
+PassportService.localInitialization(passport, LocalStrategy, sails);
+// here we create a pointer to the passport instance,
+// and use it throughout the entire app as [sails.passport] @TODO is this necessary?
+sails.passport = passport;
+...
 ```
+[code for PassportService.localInitialization]()
 
 * Configure passport settings
 ```javascript
 // config/passport.js
+module.exports = {
+  passport: {
+    userModelIdentity: 'user'
+  }
+};
 ```
 
 * Create the user model and UserController
 ```sh
 # api/models/User.js
 # api/controllers/UserController.js
-sails generate api user login logout signup
+sails generate controller user login logout signup
+sails generate model user email password
 ```
+
+* Add code to encrypt the password
+```javascript
+// api/models/User.js
+...
+beforeCreate: function(user, next) {
+    if (user.hasOwnProperty('password')) {
+      user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
+      next(false, user);
+    } else {
+        next(null, user);
+    }
+},
+...
+```
+[complete code for User model]()
 
 * Add required logic to manage users
 ```javascript
 // api/controllers/UserController.js
-// sample
+// sample for how signup is done
 ...
-  signup: function (req, res) {
-    User.create(req.params.all()).exec(function (err, user) {
-      if (err) return res.negotiate(err);
-      req.login(user, function (err){
-        if (err) return res.negotiate(err);
-        return res.redirect('/welcome');
+signup(req, res, next) {
+  sails.passport.authenticate('local-signup', function(err, user, info) {
+      if (err || !user) {
+        return res.badRequest(info && info.message || 'Wrong Signup information');
+      }
+      req.logIn(user, function(err) {
+          if (err) { return res.badRequest(err && err.message || 'Invalid username/password combination.'); }
+          return res.redirect('/welcome');
       });
-    });
-  }
+  })(req, res, next);
+}
 ...
 ```
 
-* Create authentication policy
+* Create authentication policies
 ```javascript
 // here we check for valid user session
 // api/policies/isAuthenticated.js
 ...
-  if (req.user) { return next(); }
-  return res.unauthorized();
+if (req.isAuthenticated()) { return next(); }
+return res.redirect('/login');
+...
+```
+```javascript
+// For login and signup routes, we only allow access if session does not exist
+// api/policies/isOnlyPublic.js
+...
+if (!req.isAuthenticated()) { return next(); }
+return res.redirect('/');
 ...
 ```
 
@@ -97,15 +149,26 @@ sails generate api user login logout signup
 ```javascript
 // config/routes.js
 ...
-  'get /login': { view: 'user/login' },
-  'get /signup': { view: 'user/signup' },
-  '/welcome': { view: 'user/welcome' },
-  'post /login': {
-    controller: 'UserController',
-    action: 'login'
-  },
-  'post /signup': 'UserController.signup',
-  '/logout': 'UserController.logout'
+'get /login': {
+  controller: 'UserController',
+  action: 'loginView'
+},
+'get /signup': {
+  controller: 'UserController',
+  action: 'signupView'
+},
+'post /login': 'UserController.login',
+'post /signup': 'UserController.signup',
 ...
 ```
 
+* Testing
+  * Run the app `sails lift`
+  * open url []() in the browser
+  * click [signup]()
+  * input email and password, then hit submit
+  * There you are!!
+  * Now you can access the logged in user info by calling `req.user`.
+  * Moreover, the `req.session` has a passport object in it `req.session.passport`.
+
+# Resource

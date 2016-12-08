@@ -2,7 +2,7 @@
 * @Author: mars
 * @Date:   2016-12-07T14:48:16-05:00
 * @Last modified by:   mars
-* @Last modified time: 2016-12-08T02:43:46-05:00
+* @Last modified time: 2016-12-08T17:09:51-05:00
 */
 'use strict';
 
@@ -42,8 +42,8 @@ module.exports = {
     sails.passport.authenticate('local-signin', function(err, user, info){
       // console.log('req.user:',req.user);
       console.log('user from call to authenticate:', err, user, info);
-      if (err) return res.negotiate(err);
-      if (!user) return res.badRequest(info && info.message || 'Invalid username/password combination.');
+      if (err) { return res.negotiate(err); }
+      if (!user) { return res.badRequest(info && info.message || 'Invalid username/password combination.'); }
 
       // Passport attaches the `req.login` function to the HTTP IncomingRequest prototype.
       // Unfortunately, because of how it's attached to req, it can be confusing or even
@@ -55,7 +55,7 @@ module.exports = {
       // the session store. You could do exactly the same thing yourself, e.g.:
       // `User.req.session.me = user;`
       return req.logIn(user, function (err) {
-        if (err) return res.negotiate(err);
+        if (err) { return res.negotiate(err); }
         return res.redirect('/');
       });
 
@@ -63,10 +63,6 @@ module.exports = {
 
 
   },
-
-
-
-
 
   /**
    * `UserController.logout()`
@@ -81,30 +77,15 @@ module.exports = {
    * `UserController.signup()`
    */
   signup(req, res, next) {
-
-    sails.log.warn('---------------------------------------');
-    sails.log.warn(req.query, req.body, Object.keys(sails.passport), sails.passport._strategies );
-    sails.log.warn('---------------------------------------');
-
     sails.passport.authenticate('local-signup', function(err, user, info) {
-        if ((err) || (!user)) {
+        if (err || !user) {
           return res.badRequest(info && info.message || 'Wrong Signup information');
         }
         req.logIn(user, function(err) {
-
             if (err) { return res.badRequest(err && err.message || 'Invalid username/password combination.'); }
-            // if (err) { return res.negotiate(err); } // @TODO what does negotiate do
-
-            // return res.send({
-            //     message: info.message,
-            //     user: user
-            // });
-
             return res.redirect('/welcome');
         });
-
     })(req, res, next);
-
-
   }
+
 };

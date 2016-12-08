@@ -2,7 +2,7 @@
 * @Author: mars
 * @Date:   2016-12-07T14:19:33-05:00
 * @Last modified by:   mars
-* @Last modified time: 2016-12-08T02:39:42-05:00
+* @Last modified time: 2016-12-08T15:43:18-05:00
 */
 
 'use strict';
@@ -39,29 +39,23 @@ module.exports.http = {
   *                                                                          *
   ***************************************************************************/
 
-    order: [
-      'startRequestTimer',
-      'cookieParser',
-      'session',
-      'myRequestLogger',
-      'bodyParser',
-      // below session @TODO why?
-      // 'passportInit',
-      // 'passportSession',
-      // above router @TODO why?
-      'handleBodyParserError',
-      'compress',
-      'methodOverride',
-      'poweredBy',
-      '$custom',
-      'router',
-      'www',
-      'favicon',
-      '404',
-      '500'
-    ],
-    // passportInit    : require('passport').initialize(),
-    // passportSession : require('passport').session()
+    // order: [
+    //   'startRequestTimer',
+    //   'cookieParser',
+    //   'session',
+    //   'myRequestLogger',
+    //   'bodyParser',
+    //   'handleBodyParserError',
+    //   'compress',
+    //   'methodOverride',
+    //   'poweredBy',
+    //   '$custom',
+    //   'router',
+    //   'www',
+    //   'favicon',
+    //   '404',
+    //   '500'
+    // ],
   /****************************************************************************
   *                                                                           *
   * Example custom middleware; logs each request to the console.              *
