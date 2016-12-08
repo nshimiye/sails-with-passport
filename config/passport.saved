@@ -1,0 +1,178 @@
+/**
+* @Author: mars
+* @Date:   2016-12-07T15:08:25-05:00
+* @Last modified by:   mars
+* @Last modified time: 2016-12-07T23:24:26-05:00
+*/
+'use strict';
+
+
+const passport = require('passport'),
+LocalStrategy = require('passport-local').Strategy,
+GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
+const userModelIdentity = 'user';
+
+
+// Teach our Passport how to serialize/dehydrate a user object into an id
+passport.serializeUser(function(user, done) {
+  let UserModel = sails.models[userModelIdentity];
+  console.log('Using primary key', UserModel.primaryKey, 'with record:', user);
+  done(null, user[UserModel.primaryKey]);
+});
+
+// Teach our Passport how to deserialize/hydrate an id back into a user object
+passport.deserializeUser(function(id, done) {
+  let UserModel = sails.models[userModelIdentity];
+  UserModel.findOne(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+
+// =========================================================================
+// LOCAL SIGNUP ============================================================
+// =========================================================================
+// we are using named strategies since we have one for login and one for signup
+// by default, if there was no name, it would just be called 'local'
+passport.use('local-signup', new LocalStrategy({
+    // by default, local strategy uses username and password, we will override with email
+    usernameField : 'email',
+    passwordField : 'password',
+    passReqToCallback : false // allows us to pass back the entire request to the callback
+},
+function(email, password, done) {
+
+  sails.log.warn('---------------------------------------');
+  sails.log.warn(email, password, typeof(done));
+  sails.log.warn('---------------------------------------');
+
+    // asynchronous
+    // User.findOne wont fire unless data is sent back
+    process.nextTick(function() {
+
+      // find a user whose email is the same as the forms email
+      // we are checking to see if the user trying to login already exists
+      // save new user
+      UtilityService.Model(User).create({
+                  email,
+                  password
+              }).then(newUser => {
+                    return done(null, newUser);
+              })
+              .catch(e => done(null, false, { message: e && e.message || 'No user found.' }));
+
+    });
+  }));
+
+
+// =========================================================================
+    // LOCAL SIGNIN ============================================================
+    // =========================================================================
+     // @TODO put this in the congif folder and add more Strategies
+     passport.use('local-signin', new LocalStrategy({
+         usernameField: 'email',
+         passwordField: 'password',
+         passReqToCallback : false // allows us to pass back the entire request to the callback
+       },
+       function(email, password, done) {
+
+         //Validate the user
+         User.authenticate(email, password).then( user => {
+           if (!user) { return done(null, false, { message: 'No user found.' }); }
+
+             return done(null, user, {
+               message: 'Logged In Successfully'
+             });
+
+         })
+         .catch(e => done(null, false, { message:  e.message || 'Oops! Wrong password.' }));
+
+
+
+       }
+     ));
+
+
+     // code for login (use('local-login', new LocalStategy))
+        // code for signup (use('local-signup', new LocalStategy))
+        // code for facebook (use('facebook', new FacebookStrategy))
+        // code for twitter (use('twitter', new TwitterStrategy))
+
+        // =========================================================================
+        // GOOGLE ==================================================================
+        // =========================================================================
+        passport.use('google-signup', new GoogleStrategy({
+
+            clientID        : sails.config.oauthServers.googleAuth.clientID,
+            clientSecret    : sails.config.oauthServers.googleAuth.clientSecret,
+            callbackURL     : sails.config.oauthServers.googleAuth.callbackURL
+
+        },
+        function(token, refreshToken, profile, done) {
+
+          // make the code asynchronous
+          // User.findOne wont fire unless data is sent back
+          process.nextTick(function() {
+
+            let email = profile.emails[0].value;
+            let password = 'google123456'; // @TODO generate random password
+            let profileId = profile.id, token, displayName = profile.displayName, emails = profile.emails, raw = profile;
+            let googleServiceId = profileId;
+            let googleService = { profileId, token, refreshToken, displayName, emails, raw };
+
+
+            // @TODO
+            // find a user whose email is the same as the forms email
+            // we are checking to see if the user trying to login already exists
+            // save new user
+            UtilityService.Model(User).create({
+                        email,
+                        password,
+                        googleServiceId,
+                        googleService
+                    }).then(newUser => {
+                          return done(null, newUser);
+                    })
+                    .catch(e => done(null, false, { message: e && e.message || 'No user found.' }));
+
+          });
+
+
+            // make the code asynchronous
+            // User.findOne won't fire until we have all our data back from Google
+            process.nextTick(function() {
+
+                // try to find the user based on their google id
+                User.findOne({ 'google.id' : profile.id }, function(err, user) {
+                    if (err)
+                        return done(err);
+
+                    if (user) {
+
+                        // if a user is found, log them in
+                        return done(null, user);
+                    } else {
+                        // if the user isnt in our database, create a new user
+                        var newUser          = new User();
+
+                        // set all of the relevant information
+                        newUser.google.id    = profile.id;
+                        newUser.google.token = token;
+                        newUser.google.name  = profile.displayName;
+                        newUser.google.email = profile.emails[0].value; // pull the first email
+
+                        // save the user
+                        newUser.save(function(err) {
+                            if (err)
+                                throw err;
+                            return done(null, newUser);
+                        });
+                    }
+                });
+            });
+
+        }));
+
+
+module.exports.passport = passport;
