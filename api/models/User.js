@@ -2,7 +2,7 @@
 * @Author: mars
 * @Date:   2016-12-07T14:48:16-05:00
 * @Last modified by:   mars
-* @Last modified time: 2016-12-08T15:14:14-05:00
+* @Last modified time: 2016-12-08T15:22:15-05:00
 */
 'use strict';
 
@@ -49,8 +49,8 @@ module.exports = {
         sails.log.debug('--------------- START beforeCreate password------------------------');
         sails.log.debug(`-${user.password}-`);
         sails.log.debug('---------------END beforeCreate password----------------------');
-          user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
-          next(false, user);
+        user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
+        next(false, user);
 
       } else {
           next(null, user);
