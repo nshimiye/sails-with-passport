@@ -2,7 +2,7 @@
 @Author: mars
 @Date:   2016-12-07T14:19:33-05:00
 @Last modified by:   mars
-@Last modified time: 2016-12-08T17:10:34-05:00
+@Last modified time: 2016-12-08T17:20:51-05:00
 -->
 
 
@@ -11,7 +11,7 @@
 Integrate passport into your sailsjs application
 
 # Scenario
-I want to manage users using a sailsjs app.
+I want to signup, login, and logout out of a sailsjs app.
 
 # End goal
 <!-- should be a screenshot i guess -->
