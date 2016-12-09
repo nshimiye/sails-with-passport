@@ -2,7 +2,7 @@
 * @Author: mars
 * @Date:   2016-12-07T14:48:16-05:00
 * @Last modified by:   mars
-* @Last modified time: 2016-12-08T17:09:17-05:00
+* @Last modified time: 2016-12-08T17:39:32-05:00
 */
 'use strict';
 
@@ -39,7 +39,7 @@ module.exports = {
 
   beforeCreate: function(user, next) {
       if (user.hasOwnProperty('password')) {
-        bcrypt.hash(user.password, bcrypt.genSaltSync(10)).then(hashedPassword => {
+        bcrypt.hash(user.password, 10).then(hashedPassword => {
           user.password = hashedPassword;
           next(false, user);
         });

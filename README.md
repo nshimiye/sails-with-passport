@@ -2,7 +2,7 @@
 @Author: mars
 @Date:   2016-12-07T14:19:33-05:00
 @Last modified by:   mars
-@Last modified time: 2016-12-08T17:20:51-05:00
+@Last modified time: 2016-12-08T17:34:58-05:00
 -->
 
 
@@ -172,3 +172,5 @@ return res.redirect('/');
   * Moreover, the `req.session` has a passport object in it `req.session.passport`.
 
 # Resource
+[How do I use Passport with my Sails app?](https://github.com/sails101/using-passport)
+[Implement Passport.js authentication with Sails.js ~0.10](http://iliketomatoes.com/implement-passport-js-authentication-with-sails-js-0-10-2/)
