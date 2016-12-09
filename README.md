@@ -2,7 +2,7 @@
 @Author: mars
 @Date:   2016-12-07T14:19:33-05:00
 @Last modified by:   mars
-@Last modified time: 2016-12-08T17:34:58-05:00
+@Last modified time: 2016-12-09T12:13:57-05:00
 -->
 
 
@@ -164,8 +164,8 @@ return res.redirect('/');
 
 * Testing
   * Run the app `sails lift`
-  * open url []() in the browser
-  * click [signup]()
+  * open url [http://localhost:1337/](http://localhost:1337/) in the browser
+  * click signup link [http://localhost:1337/](http://localhost:1337/)
   * input email and password, then hit submit
   * There you are!!
   * Now you can access the logged in user info by calling `req.user`.
